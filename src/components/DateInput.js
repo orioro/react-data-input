@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const DateInput = ({
-  spec,
+  schema,
   onChange,
   value,
   onParseValue,
@@ -10,7 +10,7 @@ export const DateInput = ({
   const {
     label,
     required = false,
-  } = spec
+  } = schema
 
   return <div className={className}>
     {label ? <label>{label} {required ? '*' : null}</label> : null}

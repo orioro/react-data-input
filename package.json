@@ -1,6 +1,6 @@
 {
   "name": "@orioro/react-data-input",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -25,6 +25,7 @@
     "babel-jest": "^23.6.0",
     "browser-sync": "^2.24.7",
     "jest": "^23.6.0",
+    "lodash.clonedeep": "^4.5.0",
     "react-dom": "^16.5.2",
     "rollup": "^0.66.4",
     "rollup-plugin-babel": "^4.0.3",

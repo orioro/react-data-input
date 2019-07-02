@@ -2,7 +2,7 @@ import React from 'react'
 import { ValidationErrorMessages } from './ValidationErrorMessages'
 
 export const TextInput = ({
-  spec,
+  schema,
   onChange,
   validationError,
   value = '',
@@ -11,14 +11,20 @@ export const TextInput = ({
   const {
     label,
     required = false,
-  } = spec
+    hidden = false,
+    disabled = false,
+  } = schema
 
-  return <div className={className}>
+  return <div
+    className={className}
+    hidden={hidden}>
     {label ? <label>{label} {required ? '*' : null}</label> : null}
     <input
       type='text'
       value={value}
       required={required}
+      hidden={hidden}
+      disabled={disabled}
       onChange={e => onChange(e.target.value)}
     />
 

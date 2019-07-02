@@ -2,10 +2,10 @@ import React from 'react'
 import { ValidationErrorMessages } from './ValidationErrorMessages'
 
 export const BooleanInput = ({
-  spec: {
+  schema: {
     label
   },
-  value,
+  value = false,
   className,
   onChange,
   validationError,

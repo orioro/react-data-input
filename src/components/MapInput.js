@@ -1,49 +1,54 @@
 import React from 'react'
 import { DataInput } from '../data-input'
-import { ValidationErrorMessages } from './ValidationErrorMessages'
 import { testCriteria } from '@orioro/cascade'
 
 const MapInput = ({
-  spec,
+  schema,
   className,
   value,
   onChange,
-  validationError,
   ...remainingProps,
 }) => {
 
   const {
     label,
-    attributes
-  } = spec
+    attributes,
+    disabled = false,
+    hidden = false,
+  } = schema
 
-  return <fieldset className={className}>
+  return <fieldset
+    className={className}
+    disabled={disabled}
+    hidden={hidden}>
     {label ? <legend>{label}</legend> : null}
     <div>
       {Object.keys(attributes).map(propertyId => {
-        const propertySpec = attributes[propertyId]
 
-        return (!propertySpec.condition ||
-                (propertySpec.condition && testCriteria(propertySpec.condition, value))) ?
-          <DataInput
-            {...remainingProps}
-            key={propertyId}
-            spec={attributes[propertyId]}
-            value={value[propertyId]}
-            onChange={(newPropertyValue, changeData = {}) => {
-              onChange({
-                ...value,
-                [propertyId]: newPropertyValue
-              }, {
-                ...changeData,
-                path: changeData.path ?
-                  `${propertyId}.${changeData.path}` : propertyId
-              })
-            }}
-          /> : null
+        const propertySchema = {
+          disabled,
+          hidden,
+          ...attributes[propertyId],
+        }
+
+        return <DataInput
+          {...remainingProps}
+          key={propertyId}
+          schema={propertySchema}
+          value={value[propertyId]}
+          onChange={(newPropertyValue, changeData = {}) => {
+            onChange({
+              ...value,
+              [propertyId]: newPropertyValue
+            }, {
+              ...changeData,
+              path: changeData.path ?
+                `${propertyId}.${changeData.path}` : propertyId
+            })
+          }}
+        />
       })}
     </div>
-    {validationError ? <ValidationErrorMessages validationError={validationError} /> : null}
   </fieldset>
 }
 

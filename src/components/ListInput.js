@@ -3,22 +3,24 @@ import { DataInput } from '../data-input'
 import { ValidationErrorMessages } from './ValidationErrorMessages'
 
 const ListInput = ({
-  spec: {
-    label,
-    item
-  },
+  schema,
   onChange,
   value,
   className,
   validationError,
   ...remainingProps
 }) => {
+  const {
+    label,
+    item,
+    hidden = false
+  } = schema
 
   const {
-    onParseValue
+    schemaParseValue
   } = remainingProps
 
-  return <fieldset className={className}>
+  return hidden ? null : <fieldset className={className}>
     {label ? <legend>{label}</legend> : null}
     <ul>
       {value.map((itemValue, itemIndex) => {
@@ -28,7 +30,7 @@ const ListInput = ({
           key={itemIndex}>
           <DataInput
             {...remainingProps}
-            spec={item}
+            schema={item}
             value={itemValue}
             onChange={(newItemValue, changeData = {}) => {
               onChange([
@@ -63,7 +65,7 @@ const ListInput = ({
       onClick={e => {
         onChange([
           ...value,
-          onParseValue(item, undefined)
+          schemaParseValue(item, undefined)
         ], {
           path: `${value.length}`
         })

@@ -31,8 +31,8 @@ export const DEFAULT_RENDERERS = [
 
 const UNSUPPORTED_RENDERER = {
   criteria: true,
-  render: spec => {
-    console.warn(`spec ${spec.type} is not supported`, spec)
+  render: schema => {
+    console.warn(`schema ${schema.type} is not supported`, schema)
 
     return null
   }

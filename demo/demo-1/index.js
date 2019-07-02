@@ -8,14 +8,13 @@ import {
   DEFAULT_RENDERERS,
 } from '../../src'
 
-const {
-  parseValue,
-  validateValue,
-  parseAndValidateValue
-} = dataSchema({
+
+const DATA_SCHEMA = dataSchema({
   STRING_TYPES: ['text'],
   validateAsync: true,
 })
+
+const CustomInput = withRenderers(DataInput, DEFAULT_RENDERERS)
 
 class Form extends React.Component {
   constructor(props) {
@@ -24,8 +23,8 @@ class Form extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      spec: props.spec,
-      value: parseValue(props.spec, props.value, { recursive: true }),
+      schema: props.schema,
+      value: DATA_SCHEMA.parseValue(props.schema, props.value, { recursive: true }),
       errors: []
     }
   }
@@ -34,7 +33,7 @@ class Form extends React.Component {
     e.preventDefault()
 
     const {
-      spec,
+      schema,
       value,
       errors,
     } = this.state
@@ -47,35 +46,33 @@ class Form extends React.Component {
   }
 
   render() {
-    const { spec, value } = this.state
+    const { schema, value } = this.state
 
     return <form onSubmit={this.handleSubmit}>
-      {withRenderers(DataInput, DEFAULT_RENDERERS)({
-        spec: spec,
-        value: value,
-        onChange: (newValue, { path, errors }) => {
+      <CustomInput
+        schema={schema}
+        value={value}
+        onChange={(newValue, { path, errors }) => {
 
-          console.log('onChange', newValue, path, errors)
+          // console.log('onChange', newValue, path, errors)
 
           this.setState({
             ...this.state,
             value: newValue,
             errors
           })
-        },
-        // onValidateValue: (spec, value) => {
-        //   return validateValue(spec, value, {
-        //     recursive: false,
-        //   })
-        // },
-        onParseValue: (spec, value) => {
-          // console.log('onParseValue', spec, value, parseValue(spec, value))
+        }}
+        schemaParse={(schema, value) => {
+          // console.log(schema, value)
 
-          return parseValue(spec, value, {
+          return DATA_SCHEMA.parse(schema, value)
+        }}
+        schemaParseValue={() => {
+          return DATA_SCHEMA.parseValue(schema, value, {
             recursive: false,
           })
-        }
-      })}
+        }}
+      />
       <button type='submit'>
         Enviar
       </button>
@@ -178,18 +175,9 @@ const SCHEMA = {
       ]
     },
     list_of_texts: {
-      condition: {
-        enable_list_of_texts: 'enable',
-        $expr: {
-          $eq: [
-            {
-              $cmp: ['$text_1', '$text_2']
-            },
-            0
-          ]
-        },
-      },
+      label: 'List of texts',
       type: 'list',
+      hidden: true,
       item: {
         type: 'text',
       }
@@ -230,20 +218,20 @@ const SCHEMA = {
       ui: {
         radio: true,
       }
-    },
-  }
+    }
+  },
 }
 
 render(
   <Form
-    spec={SCHEMA}
+    schema={SCHEMA}
     value={{
       map: {
         nested_map: {
           text: 'Some text',
         }
       },
-      list_of_texts: ['1', '2', '3'],
+      list_of_texts: ['text 1', 'text 2', 'text 3'],
     }}
   />,
 	document.getElementById('root')

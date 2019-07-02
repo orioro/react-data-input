@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const NumberInput = ({
-  spec,
+  schema,
   onChange,
   value = 0,
   className
@@ -9,7 +9,7 @@ export const NumberInput = ({
   const {
     label,
     required = false,
-  } = spec
+  } = schema
 
   return <div className={className}>
     {label ? <label>{label} {required ? '*' : null}</label> : null}

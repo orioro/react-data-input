@@ -1,10 +1,13 @@
 import React from 'react'
 
+const NULL_VALUE = 'NULL_VALUE'
+
 export const TextSelectInput = ({
-  spec: {
+  schema: {
     label,
     options,
     required = false,
+    nullValue = NULL_VALUE
   },
   value = '',
   onChange,
@@ -14,7 +17,15 @@ export const TextSelectInput = ({
     {label ? <label>{label} {required ? '*' : null}</label> : null}
     <select
       value={value}
-      onChange={e => onChange(e.target.value)}>
+      onChange={e => {
+        const value = e.target.value
+        if (value === nullValue) {
+          onChange(null)
+        } else {
+          onChange(value)
+        }
+      }}>
+      <option value={nullValue}>--{label}--</option>
       {options.map(option => {
         const value = typeof option === 'object' ? option.value : option
         const label = typeof option === 'object' ? option.label : option

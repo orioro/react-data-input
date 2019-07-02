@@ -1,29 +1,37 @@
 import React from 'react'
 
 export const TextSelectRadioInput = ({
-  spec: {
+  schema: {
     label,
-    options
+    options,
+    hidden = false
   },
   value = '',
   onChange,
   className,
 }) => {
-  return <div className={className}>
-    {options.map(option => {
-      const optionValue = typeof option === 'object' ? option.value : option
-      const label = typeof option === 'object' ? option.label : option
+  return <div
+    className={className}
+    hidden={hidden}>
 
-      return <label key={optionValue}>
-        {label}
-        <input
-          type='radio'
-          value={optionValue}
-          checked={optionValue === value}
-          onChange={e => onChange(e.target.value)}
-        />
-      </label>
-    })}
+    {label ? <label>{label}</label> : null}
+
+    <div>
+      {options.map((option, index) => {
+        const optionValue = typeof option === 'object' ? option.value : option
+        const label = typeof option === 'object' ? option.label : option
+
+        return <label key={optionValue || index}>
+          {label}
+          <input
+            type='radio'
+            value={optionValue}
+            checked={optionValue === value}
+            onChange={e => onChange(e.target.value)}
+          />
+        </label>
+      })}
+    </div>
   </div>
 }
 
