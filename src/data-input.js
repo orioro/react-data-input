@@ -12,15 +12,6 @@ const defaultClassName = ({ type }) => {
   }
 }
 
-// const render = (renderers, schema, props) => {
-//   return executeMatching(renderers.map(renderer => ({
-//     criteria: renderer.criteria,
-//     value: (renderer.component instanceof React.Component || typeof renderer.component === 'function') ?
-//       () => <renderer.component schema={schema} {...props} /> :
-//       renderer.render.bind(null, schema, props)
-//   })), schema, props)
-// }
-
 const DataInput = ({ schema, ...props}) => {
   const parsedSchema = props.schemaParse(schema, props.value)
 
@@ -36,7 +27,6 @@ const DataInput = ({ schema, ...props}) => {
         />
       } :
       () => {
-        throw new Error()
         return _r.render(parsedSchema, props)
       }
   }))
