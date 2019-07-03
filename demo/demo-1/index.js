@@ -14,6 +14,8 @@ const DATA_SCHEMA = dataSchema({
   validateAsync: true,
 })
 
+console.log(DATA_SCHEMA)
+
 const CustomInput = withRenderers(DataInput, DEFAULT_RENDERERS)
 
 class Form extends React.Component {

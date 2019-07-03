@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { executeMatching } from '@orioro/cascade'
 
-const defaultClassName = ({ type }) => {
+const className = ({ type }) => {
   switch (type) {
     case 'list':
     case 'map':
@@ -12,7 +12,7 @@ const defaultClassName = ({ type }) => {
   }
 }
 
-const DataInput = ({ schema, ...props}) => {
+const DataInput = ({ schema, ...props }) => {
   const parsedSchema = props.schemaParse(schema, props.value)
 
   const renderers = props.renderers.map(_r => ({
@@ -23,11 +23,12 @@ const DataInput = ({ schema, ...props}) => {
         const Component = _r.component
         return <Component
           {...props}
+          className={className(schema)}
           schema={parsedSchema}
         />
       } :
       () => {
-        return _r.render(parsedSchema, props)
+        return _r.render(parsedSchema, {...props, className: className(schema)})
       }
   }))
 
