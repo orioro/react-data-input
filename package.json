@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@orioro/data-schema": "0.1.0",
+    "@orioro/data-schema": "0.1.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "browser-sync": "^2.24.7",

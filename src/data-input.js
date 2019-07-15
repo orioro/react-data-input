@@ -2,19 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { executeMatching } from '@orioro/cascade'
 
-const className = ({ type }) => {
+const className = ({ type, className = '' }) => {
   switch (type) {
     case 'list':
     case 'map':
-      return `fieldset fieldset--${type}`
+      return `fieldset fieldset--${type} ${className}`
     default:
-      return `field field--${type}`
+      return `field field--${type} ${className}`
   }
 }
 
 const DataInput = ({ schema, ...props }) => {
-  const parsedSchema = props.schemaParse(schema, props.value)
-
   const renderers = props.renderers.map(_r => ({
     criteria: _r.criteria,
     value: (_r.component instanceof React.Component ||
@@ -24,23 +22,21 @@ const DataInput = ({ schema, ...props }) => {
         return <Component
           {...props}
           className={className(schema)}
-          schema={parsedSchema}
+          schema={schema}
         />
       } :
       () => {
-        return _r.render(parsedSchema, {...props, className: className(schema)})
+        return _r.render(schema, {...props, className: className(schema)})
       }
   }))
 
-  return executeMatching(renderers, parsedSchema, props)
+  return executeMatching(renderers, schema, props)
 }
 
 DataInput.propTypes = {
   schema: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   renderers: PropTypes.array.isRequired,
-  schemaParse: PropTypes.func.isRequired,
-  schemaParseValue: PropTypes.func.isRequired,
 }
 
 const withRenderers = (WrappedComponent, addRenderers) => ({

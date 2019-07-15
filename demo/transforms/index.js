@@ -24,7 +24,7 @@ class Form extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      schema: props.schema,
+      schema: DATA_SCHEMA.parse(props.schema, props.value, { recursive: true }),
       // value: DATA_SCHEMA.parseValue(props.schema, props.value, { recursive: true }),
       value: DATA_SCHEMA.parseValue(props.schema, props.value, { recursive: true }),
       errors: []
@@ -58,6 +58,7 @@ class Form extends React.Component {
         onChange={(newValue, { path }) => {
           this.setState({
             ...this.state,
+            schema: DATA_SCHEMA.parse(schema, newValue, { recursive: true }),
             value: DATA_SCHEMA.parseValue(schema, newValue, { recursive: true }),
           })
         }}

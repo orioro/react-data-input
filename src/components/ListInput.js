@@ -16,10 +16,6 @@ const ListInput = ({
     hidden = false
   } = schema
 
-  const {
-    schemaParseValue
-  } = remainingProps
-
   return hidden ? null : <fieldset className={className}>
     {label ? <legend>{label}</legend> : null}
     <ul>
@@ -65,7 +61,7 @@ const ListInput = ({
       onClick={e => {
         onChange([
           ...value,
-          schemaParseValue(item, undefined)
+          undefined
         ], {
           path: `${value.length}`
         })
