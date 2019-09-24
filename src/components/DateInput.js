@@ -3,7 +3,7 @@ import React from 'react'
 export const DateInput = ({
   schema,
   onChange,
-  value,
+  value = '',
   onParseValue,
   className
 }) => {
